@@ -6,7 +6,9 @@ import {
     captureDiscount,
     captureTax,
     getInvoiceState,
+    setFromInfo,
     setInvoiceNumber,
+    setToInfo,
 } from "../features/invoiceCalculator/invoiceCalcSlice";
 import InvoiceDate from "./InvoiceDate";
 import InvoiceListItem from "./InvoiceListItem";
@@ -31,11 +33,17 @@ export default function Invoice() {
 
     const [showTax, setShowTax] = useState<boolean>(false);
 
+    const [fromEmail , setFromEmail] = useState<string>("");
+    const [ toEmail , setToEmail ] = useState<string>("");
+
+    const [ toDesc , setToDesc ] = useState<string>("");
+    const [ fromDesc , setFromDesc ] = useState<string>("");
+
     const dispatch = useDispatch();
 
     const getTotal = useSelector(getInvoiceState);
 
-    const { total } = getTotal;
+    const { total , currency } = getTotal;
 
     useEffect(() => {
         const sTotal: number = invoiceItems
@@ -43,7 +51,17 @@ export default function Invoice() {
             .reduce((p, c, i) => p + c, 0);
 
         setSubTotal(sTotal);
-    }, [setSubTotal, invoiceItems]);
+
+        dispatch(setFromInfo({
+            email: fromEmail,
+            info: fromDesc
+        }));
+
+        dispatch(setToInfo({
+            email: toEmail,
+            info: toDesc
+        }));
+    }, [setSubTotal, invoiceItems , fromEmail , fromDesc ,  toEmail , toDesc , dispatch]);
 
     const onAddItem = () => {
         setRepeaterCount((prev) => prev + 1);
@@ -116,13 +134,14 @@ export default function Invoice() {
                                         controlId="rs_invoice_from_email"
                                     >
                                         <Form.Label>Bill from</Form.Label>
-                                        <Form.Control placeholder="Email"></Form.Control>
+                                        <Form.Control placeholder="Email" onChange={e=>setFromEmail(e.currentTarget.value)}></Form.Control>
                                     </Form.Group>
                                     <Form.Group className="" controlId="rs_invoice_from_who">
                                         <Form.Label className="label--hidden">From</Form.Label>
                                         <Form.Control
                                             as="textarea"
                                             placeholder="Who is this invoice from?"
+                                            onChange={e=>setFromDesc(e.currentTarget.value)}
                                         ></Form.Control>
                                     </Form.Group>
                                 </div>
@@ -130,13 +149,14 @@ export default function Invoice() {
                                 <div className="rs-invoice__bill-from--content">
                                     <Form.Group className="mb-3" controlId="rs_invoice_to_email">
                                         <Form.Label>Bill to</Form.Label>
-                                        <Form.Control placeholder="Email"></Form.Control>
+                                        <Form.Control placeholder="Email" onChange={e=>setToEmail(e.currentTarget.value)}></Form.Control>
                                     </Form.Group>
                                     <Form.Group className="" controlId="rs_invoice_to_who">
                                         <Form.Label className="label--hidden">to</Form.Label>
                                         <Form.Control
                                             as="textarea"
                                             placeholder="Who is this invoice to?"
+                                            onChange={e=>setToDesc(e.currentTarget.value)}
                                         ></Form.Control>
                                     </Form.Group>
                                 </div>
@@ -168,12 +188,7 @@ export default function Invoice() {
                                     <div className="rs-invoice__calculation-inner">
                                         <Form.Group className="form-group--horizontal">
                                             <Form.Label>Subtotal</Form.Label>
-                                            <Form.Control
-                                                className="rs-invoice__no-border rs-invoice__text-right"
-                                                type="text"
-                                                readOnly
-                                                value={subTotal}
-                                            ></Form.Control>
+                                            <span><strong>{currency}</strong> {subTotal}</span>
                                         </Form.Group>
 
                                         <div className="rs-invoice__divider"></div>
@@ -213,12 +228,7 @@ export default function Invoice() {
 
                                         <Form.Group className="form-group--horizontal">
                                             <Form.Label>Total</Form.Label>
-                                            <Form.Control
-                                                className="rs-invoice__no-border rs-invoice__text-right"
-                                                type="text"
-                                                readOnly
-                                                value={total}
-                                            ></Form.Control>
+                                            <span><strong>{currency}</strong> {total}</span>
                                         </Form.Group>
                                     </div>
                                 </div>

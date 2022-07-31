@@ -27,7 +27,7 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
 
     const getInstate = useSelector(getInvoiceState);
 
-    const { invoiceItems, discount, tax, subtotal, total, invoiceNumber, currentDate , dueDate } = getInstate;
+    const { invoiceItems, discount, tax, subtotal, total, invoiceNumber, currentDate , dueDate , fromInfo , toInfo  , currency} = getInstate;
     
     return (
         <div className="rs-preview__wrapper" style={wrapperStyle} ref={ref}>
@@ -45,19 +45,19 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
             <div className="rs-invoice__bill-from">
                 <div className="rs-invoice__bill-from--content">
                     <div className="mb-3">
-                        <span><strong>Bill from:</strong> sr1k3sh@gmail.com</span>
+                        <span><strong>Bill from:</strong> {fromInfo.email}</span>
                     </div>
                     <div className="">
-                        <p>Duis incididunt laborum laborum veniam Lorem aliqua est tempor aliquip. Tempor ullamco enim qui ullamco elit esse ea pariatur minim. Consequat aliquip voluptate laboris qui. Incididunt commodo duis nulla consequat pariatur. Dolor aliquip ipsum eiusmod ipsum reprehenderit cupidatat eiusmod mollit ex labore excepteur. Ullamco eiusmod cillum consequat ea incididunt sint. Aliqua deserunt ad laboris veniam pariatur laboris commodo id amet eiusmod adipisicing exercitation.</p>
+                        <p>{fromInfo.info}</p>
                     </div>
                 </div>
 
                 <div className="rs-invoice__bill-from--content">
                     <div className="mb-3">
-                        <span><strong>Bill to:</strong> sr1k3sh@gmail.com</span>
+                        <span><strong>Bill to:</strong>{toInfo.email}</span>
                     </div>
                     <div className="">
-                        <p>Duis incididunt laborum laborum veniam Lorem aliqua est tempor aliquip. Tempor ullamco enim qui ullamco elit esse ea pariatur minim. Consequat aliquip voluptate laboris qui. Incididunt commodo duis nulla consequat pariatur. Dolor aliquip ipsum eiusmod ipsum reprehenderit cupidatat eiusmod mollit ex labore excepteur. Ullamco eiusmod cillum consequat ea incididunt sint. Aliqua deserunt ad laboris veniam pariatur laboris commodo id amet eiusmod adipisicing exercitation.</p>
+                        <p>{toInfo.info}</p>
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
                     <div className="rs-invoice__calculation-inner">
                         <div className="form-group--horizontal">
                             <span>Subtotal</span>
-                            <span>$ {subtotal}</span>
+                            <span><strong>{currency}</strong> {subtotal}</span>
                         </div>
 
                         <div className="rs-invoice__divider"></div>
@@ -128,7 +128,7 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
 
                         <div className="form-group--horizontal">
                             <span>Total</span>
-                            <span>$ {total}</span>
+                            <span><strong>{currency}</strong> {total}</span>
                         </div>
                     </div>
                 </div>

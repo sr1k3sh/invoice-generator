@@ -11,6 +11,11 @@ export interface itemPayload {
     rate: number;
 }
 
+export interface fromInformation {
+  email: string;
+  info: string;
+}
+
 export interface InvoiceState {
   invoiceItems: itemPayload[];
   status: 'idle' | 'loading' | 'failed';
@@ -21,6 +26,9 @@ export interface InvoiceState {
   invoiceNumber: number;
   currentDate: string;
   dueDate: string;
+  fromInfo: fromInformation;
+  toInfo: fromInformation;
+  currency: string;
 }
 
 const initialState: InvoiceState = {
@@ -32,7 +40,16 @@ const initialState: InvoiceState = {
   tax: 0,
   invoiceNumber: 0,
   currentDate: 'dd-mm-yyyy',
-  dueDate: 'dd-mm-yyyy'
+  dueDate: 'dd-mm-yyyy',
+  fromInfo: {
+    email: "",
+    info: ""
+  },
+  toInfo: {
+    email: "",
+    info: ""
+  },
+  currency: "$"
 };
 
 const calculateTotal = (dis:number , gtotal:number , tax:number = 0) =>{
@@ -81,7 +98,16 @@ export const invoiceCalcSlice = createSlice({
       state.currentDate = action.payload;
     },
     setDueDate: (state, action: PayloadAction<string>) => {
-      state.dueDate = action.payload
+      state.dueDate = action.payload;
+    },
+    setFromInfo: (state, action: PayloadAction<fromInformation>) =>{
+      state.fromInfo = action.payload;
+    },
+    setToInfo : (state, action: PayloadAction<fromInformation>) =>{
+      state.toInfo = action.payload;
+    },
+    setCurrency : (state , action: PayloadAction<string>) =>{
+      state.currency = action.payload;
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -101,7 +127,7 @@ export const invoiceCalcSlice = createSlice({
   },
 });
 
-export const { setInvoiceContent , captureDiscount , captureTax , calcRemovedTotal , setInvoiceNumber , setCurrentDate , setDueDate } = invoiceCalcSlice.actions;
+export const { setInvoiceContent , captureDiscount , captureTax , calcRemovedTotal , setInvoiceNumber , setCurrentDate , setDueDate , setFromInfo , setToInfo , setCurrency } = invoiceCalcSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

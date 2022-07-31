@@ -8,10 +8,14 @@ import Preview from '../../pages/Preview';
 import { FaPrint } from 'react-icons/fa';
 import jsPDF from 'jspdf';
 import ReactDOMServer from 'react-dom/server';
+import { useDispatch } from 'react-redux';
+import { setCurrency } from '../invoiceCalculator/invoiceCalcSlice';
 
 export default function Sidebar() {
 
   const TableRef = useRef<HTMLTableElement>(null);
+
+  const dispatch = useDispatch();
 
   const getContent = useReactToPrint({
     content: () => TableRef.current
@@ -48,9 +52,9 @@ export default function Sidebar() {
       <div className='rs-sidebar__currency'>
         <Form.Group>
           <Form.Label>Currency</Form.Label>
-          <Form.Select>
+          <Form.Select onChange={e=> dispatch(setCurrency(e.currentTarget.value))}>
             {
-              currencies.map((c, i) => <option key={i} value={c.name}>{c.symbol} ({c.name})</option>)
+              currencies.map((c, i) => <option key={i} value={c.symbol}>{c.symbol} ({c.name})</option>)
             }
 
           </Form.Select>
