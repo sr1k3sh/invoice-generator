@@ -6,6 +6,7 @@ import {
     captureDiscount,
     captureTax,
     getInvoiceState,
+    setInvoiceNumber,
 } from "../features/invoiceCalculator/invoiceCalcSlice";
 import InvoiceDate from "./InvoiceDate";
 import InvoiceListItem from "./InvoiceListItem";
@@ -99,8 +100,9 @@ export default function Invoice() {
                                     </Form.Label>
                                     <Form.Control
                                         className="rs-invoice__title-input"
-                                        type="text"
-                                        defaultValue="001"
+                                        type="number"
+                                        placeholder="001"
+                                        onChange={e=>dispatch(setInvoiceNumber(parseInt(e.currentTarget?.value)))}
                                     ></Form.Control>
                                 </Form.Group>
                             </div>

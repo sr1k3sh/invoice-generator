@@ -18,6 +18,9 @@ export interface InvoiceState {
   total: number;
   discount: number;
   tax: number;
+  invoiceNumber: number;
+  currentDate: string;
+  dueDate: string;
 }
 
 const initialState: InvoiceState = {
@@ -27,6 +30,9 @@ const initialState: InvoiceState = {
   subtotal:0,
   total: 0,
   tax: 0,
+  invoiceNumber: 0,
+  currentDate: 'dd-mm-yyyy',
+  dueDate: 'dd-mm-yyyy'
 };
 
 const calculateTotal = (dis:number , gtotal:number , tax:number = 0) =>{
@@ -67,6 +73,15 @@ export const invoiceCalcSlice = createSlice({
         let grossTotal = state.invoiceItems.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
         state.subtotal = grossTotal;
         state.total = calculateTotal(state.discount , grossTotal , state.tax);
+    },
+    setInvoiceNumber: ( state , action: PayloadAction<number>) =>{
+      state.invoiceNumber = action.payload;
+    },
+    setCurrentDate: (state, action: PayloadAction<string>)=>{
+      state.currentDate = action.payload;
+    },
+    setDueDate: (state, action: PayloadAction<string>) => {
+      state.dueDate = action.payload
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -86,7 +101,7 @@ export const invoiceCalcSlice = createSlice({
   },
 });
 
-export const { setInvoiceContent , captureDiscount , captureTax , calcRemovedTotal } = invoiceCalcSlice.actions;
+export const { setInvoiceContent , captureDiscount , captureTax , calcRemovedTotal , setInvoiceNumber , setCurrentDate , setDueDate } = invoiceCalcSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

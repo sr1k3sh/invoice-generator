@@ -27,17 +27,17 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
 
     const getInstate = useSelector(getInvoiceState);
 
-    const { invoiceItems, discount, tax, subtotal, total } = getInstate;
+    const { invoiceItems, discount, tax, subtotal, total, invoiceNumber, currentDate , dueDate } = getInstate;
     
     return (
         <div className="rs-preview__wrapper" style={wrapperStyle} ref={ref}>
             <div className="rs-preview__date-wrapper mb-4" style={dateWrapper}>
-                <span>Date: 07/07/2022</span>
-                <span>Due date: --/--/----</span>
+                <span>Date: {currentDate}</span>
+                <span>Due date: {dueDate}</span>
             </div>
 
             <div>
-                <h2>Invoice #001</h2>
+                <h2>Invoice #{invoiceNumber}</h2>
             </div>
 
             <div className="rs-invoice__divider"></div>
