@@ -1,11 +1,11 @@
 # Invoice generator
 
-## screenshot
+## Screenshot
 
 ![ screenshoot ](./public/Screen%20Shot%202022-07-31%20at%206.04.01%20PM.png)
 
 
-## features
+## Features
 
 * view pdf
 * print pdf
