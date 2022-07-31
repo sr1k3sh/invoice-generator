@@ -1,5 +1,7 @@
 import { forwardRef } from "react";
 import { Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { getInvoiceState } from "../features/invoiceCalculator/invoiceCalcSlice";
 
 // type props = {
 //     refTable: Ref<HTMLTableElement> | null;
@@ -22,6 +24,11 @@ const dateWrapper: React.CSSProperties = {
     justifyContent: "space-between"
 }
 const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
+
+    const getInstate = useSelector(getInvoiceState);
+
+    const { invoiceItems, discount, tax, subtotal, total } = getInstate;
+    
     return (
         <div className="rs-preview__wrapper" style={wrapperStyle} ref={ref}>
             <div className="rs-preview__date-wrapper mb-4" style={dateWrapper}>
@@ -69,7 +76,19 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
                         </tr>
                     </thead>
                     <tbody>
-
+                        {
+                            invoiceItems.map(({item,description ,quantity,rate,stotal},i)=><tr key={i}>
+                                <td>
+                                    <div className="d-flex flex-column">
+                                        <strong className="mb-2">{item}</strong>
+                                        <span>{description}</span>
+                                    </div>    
+                                </td>
+                                <td>{quantity}</td>
+                                <td className="text-center">{rate}</td>
+                                <td className="text-end">{stotal}</td>
+                            </tr>)
+                        }
                     </tbody>
                 </Table>
                 <div className="rs-invoice__calculation-wrapper justify-content-end">
@@ -80,7 +99,7 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
                     <div className="rs-invoice__calculation-inner">
                         <div className="form-group--horizontal">
                             <span>Subtotal</span>
-                            <span>$ 1000</span>
+                            <span>$ {subtotal}</span>
                         </div>
 
                         <div className="rs-invoice__divider"></div>
@@ -92,7 +111,7 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
                             >
                                 discount (%)
                             </span>
-                            <span> 10 %</span>
+                            <span> {discount}%</span>
                         </div>
                         <div className="form-group--horizontal justify-content-end">
                             <span
@@ -102,14 +121,14 @@ const Preview = forwardRef<HTMLTableElement, content>((props, ref) => {
                                 tax (%)
                             </span>
                             <span
-                            > 13% </span>
+                            > {tax}% </span>
                         </div>
 
                         <div className="rs-invoice__divider"></div>
 
                         <div className="form-group--horizontal">
                             <span>Total</span>
-                            <span>$ 1100</span>
+                            <span>$ {total}</span>
                         </div>
                     </div>
                 </div>

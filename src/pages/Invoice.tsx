@@ -18,7 +18,7 @@ export default function Invoice() {
 
     const getInState = useSelector(getInvoiceState);
 
-    const { subTotals } = getInState;
+    const { invoiceItems } = getInState;
 
     const [subTotal, setSubTotal] = useState<number>(0);
 
@@ -37,12 +37,12 @@ export default function Invoice() {
     const { total } = getTotal;
 
     useEffect(() => {
-        const sTotal: number = subTotals
+        const sTotal: number = invoiceItems
             .map((s) => s.stotal)
             .reduce((p, c, i) => p + c, 0);
 
         setSubTotal(sTotal);
-    }, [setSubTotal, subTotals]);
+    }, [setSubTotal, invoiceItems]);
 
     const onAddItem = () => {
         setRepeaterCount((prev) => prev + 1);

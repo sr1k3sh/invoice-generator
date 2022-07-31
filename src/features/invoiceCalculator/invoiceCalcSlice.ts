@@ -12,17 +12,19 @@ export interface itemPayload {
 }
 
 export interface InvoiceState {
-  subTotals: itemPayload[];
+  invoiceItems: itemPayload[];
   status: 'idle' | 'loading' | 'failed';
+  subtotal: number;
   total: number;
   discount: number;
   tax: number;
 }
 
 const initialState: InvoiceState = {
-  subTotals: [],
+  invoiceItems: [],
   status: 'idle',
   discount: 0,
+  subtotal:0,
   total: 0,
   tax: 0,
 };
@@ -42,24 +44,28 @@ export const invoiceCalcSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     setInvoiceContent: (state, action: PayloadAction<itemPayload>)=>{
-        state.subTotals = state.subTotals.filter(s=>s.key !== action.payload.key);
-        state.subTotals.push(action.payload);
-        let grossTotal = state.subTotals.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+        state.invoiceItems = state.invoiceItems.filter(s=>s.key !== action.payload.key);
+        state.invoiceItems.push(action.payload);
+        let grossTotal = state.invoiceItems.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+        state.subtotal = grossTotal;
         state.total = calculateTotal(state.discount , grossTotal , state.tax);
     },
     captureDiscount: (state, action: PayloadAction<number>) =>{
       state.discount = action.payload;
-      let grossTotal = state.subTotals.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+      let grossTotal = state.invoiceItems.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+      state.subtotal = grossTotal;
       state.total = calculateTotal(action.payload , grossTotal , state.tax);
     },
     captureTax: (state, action: PayloadAction<number>) =>{
       state.tax = action.payload;
-      let grossTotal = state.subTotals.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+      let grossTotal = state.invoiceItems.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+      state.subtotal = grossTotal;
       state.total = calculateTotal(state.discount , grossTotal , action.payload);
     },
     calcRemovedTotal: ( state , action: PayloadAction<number>) =>{
-        state.subTotals = state.subTotals.filter(s=> s.stotal !== action.payload);
-        let grossTotal = state.subTotals.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+        state.invoiceItems = state.invoiceItems.filter(s=> s.stotal !== action.payload);
+        let grossTotal = state.invoiceItems.map(s=>s.stotal).reduce((a,c,i)=> a+c,0);
+        state.subtotal = grossTotal;
         state.total = calculateTotal(state.discount , grossTotal , state.tax);
     }
   },
