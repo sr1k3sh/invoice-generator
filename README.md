@@ -1,4 +1,16 @@
-# Getting Started with Create React App
+# Invoice generator
+
+## screenshot
+
+![ screenshoot ](./public/Screen%20Shot%202022-07-31%20at%206.04.01%20PM.png)
+
+
+## features
+
+* view pdf
+* print pdf
+* discount/tax calculation
+* remove added item
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
 
