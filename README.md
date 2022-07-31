@@ -1,5 +1,8 @@
 # Invoice generator
 
+## demo url 
+https://generateinvoice.netlify.app/
+
 ## Screenshot
 
 ![ screenshoot ](./public/Screen%20Shot%202022-07-31%20at%206.04.01%20PM.png)
