@@ -103,7 +103,7 @@ export default function Invoice() {
 
     return (
         <div className="rs-invoice__wrapper">
-            <Container>
+            <Container fluid="xl">
                 <Row>
                     <Col md={9}>
                         <Form className="rs-invoice__form-wrapper">
@@ -165,21 +165,23 @@ export default function Invoice() {
                             <div className="rs-invoice__divider"></div>
 
                             <div className="rs-invoice__item-list">
-                                <Table className="rs-invoice__item-table mb-4">
-                                    <thead className="rs-invoice__item-header">
-                                        <tr>
-                                            <th>item</th>
-                                            <th style={{ width: "100px" }}>qty</th>
-                                            <th style={{ width: "150px" }}>rate</th>
-                                            <th style={{ width: "200px" }}>total</th>
-                                            <th>action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <InvoiceListItem index={0}></InvoiceListItem>
-                                        {children}
-                                    </tbody>
-                                </Table>
+                                <div className="rs-invoice__table-wrapper">
+                                    <Table className="rs-invoice__item-table mb-4">
+                                        <thead className="rs-invoice__item-header">
+                                            <tr>
+                                                <th>item</th>
+                                                <th style={{ width: "100px" }}>qty</th>
+                                                <th style={{ width: "150px" }}>rate</th>
+                                                <th style={{ width: "200px" }}>total</th>
+                                                <th>action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <InvoiceListItem index={0}></InvoiceListItem>
+                                            {children}
+                                        </tbody>
+                                    </Table>
+                                </div>
                                 <div className="rs-invoice__calculation-wrapper">
                                     <Button className="rs-invoice__add-item" onClick={onAddItem}>
                                         {" "}
